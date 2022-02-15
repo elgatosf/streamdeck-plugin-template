@@ -1,0 +1,6 @@
+.DS_Store
+.idea/**
+/src/DistributionTool
+/src/DistributionTool
+com.elgato.template.streamDeckPlugin
+.vscode/**

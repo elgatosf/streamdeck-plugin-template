@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>com.elgato.template.externalWindow</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="libs/css/sdpi.css" />
+		<style>
+			body {
+				background-color: transparent;
+			}
+
+			.sdpi-item {
+				max-width: none;
+			}
+
+			.sdpi-heading {
+				margin: 16px 0;
+			}
+
+			ul {
+				max-height: none;
+			}
+			li * {
+				min-height: 18px;
+				padding: 4px;
+				display: flex;
+				align-items: center;
+			}
+
+			.wrap {
+				margin: 8px;
+			}
+			.title {
+				font-weight: bold;
+				padding-bottom: 2px;
+				margin-bottom: 6px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+				text-transform: uppercase;
+			}
+
+			.wrap {
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="sdpi-wrapper">
+			<div class="sdpi-heading">INFORMATION</div>
+			<div class="wrap">
+				<p>
+					In your external window you can either place your own
+					designs, or simply use the built-in sdpi.css to style your
+					content.
+				</p>
+			</div>
+
+			<div class="wrap">
+				<button id="send" type="button" value="Click here">
+					Click here
+				</button>
+				<p>
+					Clicking the button sends some information to your Property
+					Inspector. Just open the remote-debugger for your Property
+					Inspector and watch the console.
+				</p>
+			</div>
+		</div>
+
+		<script src="external.js"></script>
+	</body>
+</html>
