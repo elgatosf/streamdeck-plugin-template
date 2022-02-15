@@ -6,7 +6,7 @@
  * StreamDeck object containing all required code to establish
  * communication with SD-Software and the Property Inspector
  */
-class StreamDeck {
+class ELGSDStreamDeck {
     #port;
     #uuid;
     #messageType;
@@ -21,11 +21,11 @@ class StreamDeck {
     #removeAllListeners = EventHandler.removeAll;
 
     constructor() {
-        if (StreamDeck.__instance) {
-            return StreamDeck.__instance;
+        if (ELGSDStreamDeck.__instance) {
+            return ELGSDStreamDeck.__instance;
         }
 
-        StreamDeck.__instance = this;
+        ELGSDStreamDeck.__instance = this;
     }
 
     /**
@@ -330,6 +330,8 @@ class StreamDeck {
     }
 }
 
+var StreamDeck = new ELGSDStreamDeck();
+
 /**
  * connectElgatoStreamDeckSocket
  * This is the first function StreamDeck Software calls, when
@@ -341,5 +343,5 @@ class StreamDeck {
  * @param {string} actionInfo - Context is an internal identifier used to communicate to the host application.
  */
 function connectElgatoStreamDeckSocket() {
-    new StreamDeck().connect(arguments);
+    StreamDeck.connect(arguments);
 }

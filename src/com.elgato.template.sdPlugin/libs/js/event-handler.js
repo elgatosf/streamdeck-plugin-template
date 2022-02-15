@@ -1,41 +1,45 @@
-class EventHandler {
-    static eventList = new Map();
+class ELGSDEventHandler {
+	eventList = new Map();
 
-    static on(name, fn) {
-        if (!EventHandler.eventList.has(name)) {
-            EventHandler.eventList.set(name, EventHandler.pubSub());
-        }
+	on(name, fn) {
+		if (!EventHandler.eventList.has(name)) {
+			EventHandler.eventList.set(name, EventHandler.pubSub());
+		}
 
-        return EventHandler.eventList.get(name).sub(fn);
-    }
+		return EventHandler.eventList.get(name).sub(fn);
+	}
 
-    static remove(name) {
-        this.eventList.delete(name)
-    }
+	remove(name) {
+		this.eventList.delete(name);
+	}
 
-    static removeAll(name) {
-        Array.from(this.eventList.keys()).filter(key => key.startsWith(name)).forEach(key => this.eventList.delete(key))
-    }
+	removeAll(name) {
+		Array.from(this.eventList.keys())
+			.filter((key) => key.startsWith(name))
+			.forEach((key) => this.eventList.delete(key));
+	}
 
-    static has(name) {
-        return EventHandler.eventList.has(name);
-    }
+	has(name) {
+		return EventHandler.eventList.has(name);
+	}
 
-    static emit(name, data) {
-        return EventHandler.eventList.has(name) && EventHandler.eventList.get(name).pub(data);
-    }
+	emit(name, data) {
+		return EventHandler.eventList.has(name) && EventHandler.eventList.get(name).pub(data);
+	}
 
-    static pubSub() {
-        const subscribers = new Set();
+	pubSub() {
+		const subscribers = new Set();
 
-        const sub = (fn) => {
-            subscribers.add(fn);
-            return () => {
-                subscribers.delete(fn);
-            };
-        };
+		const sub = (fn) => {
+			subscribers.add(fn);
+			return () => {
+				subscribers.delete(fn);
+			};
+		};
 
-        const pub = (data) => subscribers.forEach((fn) => fn(data));
-        return Object.freeze({pub, sub});
-    }
+		const pub = (data) => subscribers.forEach((fn) => fn(data));
+		return Object.freeze({ pub, sub });
+	}
 }
+
+var EventHandler = new ELGSDEventHandler();

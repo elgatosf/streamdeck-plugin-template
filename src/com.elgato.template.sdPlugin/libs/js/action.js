@@ -4,7 +4,7 @@
  * @class Action
  * A Stream Deck plugin action, where you can register callback functions for different events
  */
-class Action {
+class ELGSDAction {
     UUID;
     #on = EventHandler.on;
     #removeListener = EventHandler.remove;
@@ -159,3 +159,5 @@ class Action {
         return this.#removeListener(`${this.UUID}.${eventName}`);
     }
 }
+
+var Action = ELGSDAction;

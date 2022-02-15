@@ -8,7 +8,7 @@ const fadeColor = function (col, amt) {
 	return '#' + (g | (b << 8) | (r << 16)).toString(16).padStart(6, 0);
 };
 
-new StreamDeck().onConnected(({ appInfo }) => {
+StreamDeck.onConnected(({ appInfo }) => {
 	if (appInfo?.colors) return;
 	const clrs = appInfo.colors;
 	const node = document.getElementById('#sdpi-dynamic-styles') || document.createElement('style');
