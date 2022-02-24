@@ -1,5 +1,7 @@
-/// <reference path="event-handler.js" />
+/// <reference path="event-emitter.js" />
 /// <reference path="constants.js" />
+
+// TODO: add clearTitle, switchToProfile (see https://elgato.slack.com/archives/D02LPKC0M9D/p1645183819000839 ), swap optional context to be second everywhere
 
 /**
  * @class StreamDeck
@@ -80,7 +82,7 @@ class ELGSDStreamDeck {
 
 		this.#websocket.onmessage = (evt) => {
 			const data = evt?.data ? JSON.parse(evt.data) : {};
-			const {action, event} = data;
+			const { action, event } = data;
 			const message = action ? `${action}.${event}` : event;
 
 			if (message && message !== '') this.#emit(message, data);
@@ -91,7 +93,7 @@ class ELGSDStreamDeck {
 	 * Write to log file
 	 * @param message
 	 */
-	log(message) {
+	logMessage(message) {
 		try {
 			if (this.#websocket) {
 				const json = {
@@ -159,7 +161,7 @@ class ELGSDStreamDeck {
 	 * @param payload
 	 */
 	send(context, fn, payload) {
-		const pl = Object.assign({}, {event: fn, context: context}, payload);
+		const pl = Object.assign({}, { event: fn, context: context }, payload);
 		this.#websocket && this.#websocket.send(JSON.stringify(pl));
 	}
 
@@ -252,7 +254,7 @@ class ELGSDStreamDeck {
 	 * @param context
 	 * @param payload
 	 */
-	setState(context, payload) {
+	setState(payload, context) {
 		this.send(context, SET_STATE, {
 			payload: {
 				state: 1 - Number(payload === 0),
@@ -266,7 +268,7 @@ class ELGSDStreamDeck {
 	 * @param title
 	 * @param target
 	 */
-	setTitle(context, title, target) {
+	setTitle(title, target, context) {
 		this.send(context, SET_TITLE, {
 			payload: {
 				title: '' + title || '',
@@ -280,7 +282,7 @@ class ELGSDStreamDeck {
 	 * @param context
 	 * @param payload
 	 */
-	sendToPropertyInspector(context, payload) {
+	sendToPropertyInspector(payload, context) {
 		this.send(context, SEND_TO_PROPERTY_INSPECTOR, {
 			action: this.#actionInfo.action,
 			payload: payload,

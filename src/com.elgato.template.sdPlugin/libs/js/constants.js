@@ -21,6 +21,7 @@ const SocketErrors = {
 /**
  * Events
  */
+//TODO: group these in objects that make sense & rename
 const DID_RECEIVE_SETTINGS = 'didReceiveSettings';
 const DID_RECEIVE_GLOBAL_SETTINGS = 'didReceiveGlobalSettings';
 const KEY_DOWN = 'keyDown';
