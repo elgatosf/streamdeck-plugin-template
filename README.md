@@ -37,7 +37,7 @@ A short guide to help you getting started quickly.
 You can get starting in app.js!
 
 ```javascript
-streamDeck.onConnected(({actionInfo, appInfo, connection, messageType, port, uuid}) => {
+$SD.onConnected(({actionInfo, appInfo, connection, messageType, port, uuid}) => {
     const myAction = new Action('my.domain.plugin.action');
 
     myAction.onKeyUp(({action, context, device, event, payload}) => {

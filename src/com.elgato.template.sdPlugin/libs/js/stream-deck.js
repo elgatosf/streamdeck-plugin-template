@@ -368,7 +368,7 @@ class ELGSDStreamDeck {
 	}
 }
 
-var StreamDeck = new ELGSDStreamDeck();
+var $SD = new ELGSDStreamDeck();
 
 /**
  * connectElgatoStreamDeckSocket
@@ -381,5 +381,5 @@ var StreamDeck = new ELGSDStreamDeck();
  * @param {string} actionInfo - Context is an internal identifier used to communicate to the host application.
  */
 function connectElgatoStreamDeckSocket() {
-	StreamDeck.connect(arguments);
+	$SD.connect(arguments);
 }

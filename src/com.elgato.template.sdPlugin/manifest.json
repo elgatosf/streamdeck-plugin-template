@@ -21,6 +21,7 @@
 		}
 	],
 	"Category": "Template Plugin",
+	"CategoryIcon": "actions/template/assets/actionimage",
 	"Actions": [
 		{
 			"Icon": "actions/template/assets/actionimage",

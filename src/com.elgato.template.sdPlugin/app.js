@@ -4,7 +4,7 @@
 /**
  * The first event fired when Stream Deck starts
  */
-StreamDeck.onConnected(({ actionInfo, appInfo, connection, messageType, port, uuid }) => {
+ $SD.onConnected(({ actionInfo, appInfo, connection, messageType, port, uuid }) => {
 	// TODO: Remove this test logging code and replace with simple action
 	console.log({ object: 'stream-deck', event: 'onConnected' });
 
@@ -43,7 +43,7 @@ StreamDeck.onConnected(({ actionInfo, appInfo, connection, messageType, port, uu
 			console.log({ object: 'action', event: 'onSendToPropertyInspector' });
 		});
 
-	StreamDeck.onDeviceDidConnect(() => {
+		$SD.onDeviceDidConnect(() => {
 		console.log({ object: 'stream-deck', event: 'onDeviceDidConnect' });
 	})
 		.onDeviceDidDisconnect(() => {
@@ -53,11 +53,9 @@ StreamDeck.onConnected(({ actionInfo, appInfo, connection, messageType, port, uu
 			console.log({ object: 'stream-deck', event: 'onSendToPropertyInspector' });
 		})
 		.onApplicationDidLaunch(() => {
-			// TODO: figure out why this event does not fire
 			console.log({ object: 'stream-deck', event: 'onApplicationDidLaunch' });
 		})
 		.onApplicationDidTerminate(() => {
-			// TODO: figure out why this event does not fire
 			console.log({ object: 'stream-deck', event: 'onApplicationDidTerminate' });
 		})
 		.onSystemDidWakeUp(() => {
