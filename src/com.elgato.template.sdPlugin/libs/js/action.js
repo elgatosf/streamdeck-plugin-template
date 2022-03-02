@@ -17,7 +17,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onDidReceiveSettings(fn) {
-		this.#on(`${this.UUID}.${DID_RECEIVE_SETTINGS}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.didReceiveSettings}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -26,7 +26,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onDidReceiveGlobalSettings(fn) {
-		this.#on(DID_RECEIVE_GLOBAL_SETTINGS, (jsn) => fn(jsn));
+		this.#on(Events.didReceiveGlobalSettings, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -35,7 +35,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onKeyDown(fn) {
-		this.#on(`${this.UUID}.${KEY_DOWN}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.keyDown}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -44,7 +44,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onKeyUp(fn) {
-		this.#on(`${this.UUID}.${KEY_UP}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.keyUp}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -53,7 +53,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onWillAppear(fn) {
-		this.#on(`${this.UUID}.${WILL_APPEAR}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.willAppear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -62,7 +62,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onWillDisappear(fn) {
-		this.#on(`${this.UUID}.${WILL_DISAPPEAR}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.willDisappear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -71,7 +71,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onTitleParametersDidChange(fn) {
-		this.#on(`${this.UUID}.${TITLE_PARAMETERS_DID_CHANGE}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.titleParametersDidChange}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -80,7 +80,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onPropertyInspectorDidAppear(fn) {
-		this.#on(`${this.UUID}.${PROPERTY_INSPECTOR_DID_APPEAR}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.propertyInspectorDidAppear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -89,7 +89,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onPropertyInspectorDidDisappear(fn) {
-		this.#on(`${this.UUID}.${PROPERTY_INSPECTOR_DID_DISAPPEAR}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.propertyInspectorDidDisappear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -98,7 +98,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onSendToPlugin(fn) {
-		this.#on(`${this.UUID}.${SEND_TO_PLUGIN}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.sendToPlugin}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -107,7 +107,7 @@ class ELGSDAction {
 	 * @param {*} fn
 	 */
 	onSendToPropertyInspector(fn) {
-		this.#on(`${this.UUID}.${SEND_TO_PROPERTY_INSPECTOR}`, (jsn) => fn(jsn));
+		this.#on(`${this.UUID}.${Events.sendToPropertyInspector}`, (jsn) => fn(jsn));
 		return this;
 	}
 }

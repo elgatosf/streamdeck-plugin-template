@@ -17,8 +17,8 @@ class ELGSDStreamDeck {
 	language;
 	localization;
 	appInfo;
-	on = EventEmitter.on;
-	emit = EventEmitter.emit;
+	#on = EventEmitter.on;
+	#emit = EventEmitter.emit;
 
 	constructor() {
 		if (ELGSDStreamDeck.__instance) {
@@ -35,7 +35,6 @@ class ELGSDStreamDeck {
 	 * @param messageType
 	 * @param appInfoString
 	 * @param actionString
-	 * @private
 	 */
 	connect([port, uuid, messageType, appInfoString, actionString]) {
 		this.port = port;
@@ -60,7 +59,7 @@ class ELGSDStreamDeck {
 
 			this.websocket.send(JSON.stringify(json));
 
-			this.emit(CONNECTED, {
+			this.#emit(Events.connected, {
 				connection: this.websocket,
 				port: this.port,
 				uuid: this.uuid,
@@ -82,10 +81,10 @@ class ELGSDStreamDeck {
 
 		this.websocket.onmessage = (evt) => {
 			const data = evt?.data ? JSON.parse(evt.data) : {};
-			const { action, event } = data;
+			const {action, event} = data;
 			const message = action ? `${action}.${event}` : event;
 
-			if (message && message !== '') this.emit(message, data);
+			if (message && message !== '') this.#emit(message, data);
 		};
 	}
 
@@ -97,7 +96,7 @@ class ELGSDStreamDeck {
 		try {
 			if (this.websocket) {
 				const json = {
-					event: LOG_MESSAGE,
+					event: Events.logMessage,
 					payload: {
 						message: message,
 					},
@@ -118,8 +117,8 @@ class ELGSDStreamDeck {
 		const manifest = await this.readJson(`${pathPrefix}${this.language}.json`);
 		this.localization = manifest['Localization'] ?? null;
 
-		if (this.messageType === REGISTER_PROPERTY_INSPECTOR && this.localization) {
-			const elements = document.querySelectorAll(DATA_LOCALIZE);
+		if (this.messageType === Events.registerPropertyInspector && this.localization) {
+			const elements = document.querySelectorAll(Constants.dataLocalize);
 
 			elements.forEach((element) => {
 				element.textContent =
@@ -161,7 +160,7 @@ class ELGSDStreamDeck {
 	 * @param payload
 	 */
 	send(context, fn, payload) {
-		const pl = Object.assign({}, { event: fn, context: context }, payload);
+		const pl = Object.assign({}, {event: fn, context: context}, payload);
 		this.websocket && this.websocket.send(JSON.stringify(pl));
 	}
 
@@ -170,7 +169,7 @@ class ELGSDStreamDeck {
 	 * @param context
 	 */
 	getSettings(context) {
-		this.send(context ?? this.uuid, GET_SETTINGS, {});
+		this.send(context ?? this.uuid, Events.getSettings, {});
 	}
 
 	/**
@@ -179,7 +178,7 @@ class ELGSDStreamDeck {
 	 * @param context
 	 */
 	setSettings(payload, context) {
-		this.send(context ?? this.uuid, SET_SETTINGS, {
+		this.send(context ?? this.uuid, Events.setSettings, {
 			action: StreamDeck?.actionInfo?.action,
 			payload: payload || {},
 			targetContext: StreamDeck?.actionInfo?.context,
@@ -190,7 +189,7 @@ class ELGSDStreamDeck {
 	 * Request the plugin's persistent data. StreamDeck does not return the data, but trigger the plugin/property inspectors didReceiveGlobalSettings event
 	 */
 	getGlobalSettings() {
-		this.send(this.uuid, GET_GLOBAL_SETTINGS, {});
+		this.send(this.uuid, Events.getGlobalSettings, {});
 	}
 
 	/**
@@ -198,7 +197,7 @@ class ELGSDStreamDeck {
 	 * @param payload
 	 */
 	setGlobalSettings(payload) {
-		this.send(this.uuid, SET_GLOBAL_SETTINGS, {
+		this.send(this.uuid, Events.setGlobalSettings, {
 			payload: payload,
 		});
 	}
@@ -208,7 +207,7 @@ class ELGSDStreamDeck {
 	 * @param urlToOpen
 	 */
 	openUrl(urlToOpen) {
-		this.send(this.uuid, OPEN_URL, {
+		this.send(this.uuid, Events.openUrl, {
 			payload: {
 				url: urlToOpen,
 			},
@@ -223,7 +222,7 @@ class ELGSDStreamDeck {
 	sendToPlugin(payload, context) {
 		this.send(
 			context ?? this.uuid,
-			SEND_TO_PLUGIN,
+			Events.sendToPlugin,
 			{
 				action: StreamDeck?.actionInfo?.action,
 				payload: payload || {},
@@ -238,7 +237,7 @@ class ELGSDStreamDeck {
 	 * @param context
 	 */
 	showAlert(context) {
-		this.send(context, SHOW_ALERT, {});
+		this.send(context, Events.showAlert, {});
 	}
 
 	/**
@@ -246,7 +245,7 @@ class ELGSDStreamDeck {
 	 * @param context
 	 */
 	showOk(context) {
-		this.send(context, SHOW_OK, {});
+		this.send(context, Events.showOk, {});
 	}
 
 	/**
@@ -255,7 +254,7 @@ class ELGSDStreamDeck {
 	 * @param payload
 	 */
 	setState(payload, context) {
-		this.send(context, SET_STATE, {
+		this.send(context, Events.setState, {
 			payload: {
 				state: 1 - Number(payload === 0),
 			},
@@ -269,10 +268,10 @@ class ELGSDStreamDeck {
 	 * @param target
 	 */
 	setTitle(title, target, context) {
-		this.send(context, SET_TITLE, {
+		this.send(context, Events.setTitle, {
 			payload: {
 				title: '' + title || '',
-				target: target || HARDWARE_AND_SOFTWARE,
+				target: target || Constants.hardwareAndSoftware,
 			},
 		});
 	}
@@ -283,7 +282,7 @@ class ELGSDStreamDeck {
 	 * @param payload
 	 */
 	sendToPropertyInspector(payload, context) {
-		this.send(context, SEND_TO_PROPERTY_INSPECTOR, {
+		this.send(context, Events.sendToPropertyInspector, {
 			action: this.actionInfo.action,
 			payload: payload,
 		});
@@ -296,10 +295,10 @@ class ELGSDStreamDeck {
 	 * @param target
 	 */
 	setImage(context, img, target) {
-		this.send(context, SET_IMAGE, {
+		this.send(context, Events.setImage, {
 			payload: {
 				image: img || '',
-				target: target || HARDWARE_AND_SOFTWARE,
+				target: target || Constants.hardwareAndSoftware,
 			},
 		});
 	}
@@ -309,7 +308,7 @@ class ELGSDStreamDeck {
 	 * @param {*} fn
 	 */
 	onConnected(fn) {
-		this.on(CONNECTED, (jsn) => fn(jsn));
+		this.#on(Events.connected, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -318,7 +317,7 @@ class ELGSDStreamDeck {
 	 * @param fn
 	 */
 	onSendToPropertyInspector(fn) {
-		this.on(SEND_TO_PROPERTY_INSPECTOR, (jsn) => fn(jsn));
+		this.#on(Events.sendToPropertyInspector, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -327,7 +326,7 @@ class ELGSDStreamDeck {
 	 * @param {*} fn
 	 */
 	onDeviceDidConnect(fn) {
-		this.on(DEVICE_DID_CONNECT, (jsn) => fn(jsn));
+		this.#on(Events.deviceDidConnect, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -336,7 +335,7 @@ class ELGSDStreamDeck {
 	 * @param {*} fn
 	 */
 	onDeviceDidDisconnect(fn) {
-		this.on(DEVICE_DID_DISCONNECT, (jsn) => fn(jsn));
+		this.#on(Events.deviceDidDisconnect, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -345,7 +344,7 @@ class ELGSDStreamDeck {
 	 * @param {*} fn
 	 */
 	onApplicationDidLaunch(fn) {
-		this.on(APPLICATION_DID_LAUNCH, (jsn) => fn(jsn));
+		this.#on(Events.applicationDidLaunch, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -354,7 +353,7 @@ class ELGSDStreamDeck {
 	 * @param {*} fn
 	 */
 	onApplicationDidTerminate(fn) {
-		this.on(APPLICATION_DID_TERMINATE, (jsn) => fn(jsn));
+		this.#on(Events.applicationDidTerminate, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -363,12 +362,12 @@ class ELGSDStreamDeck {
 	 * @param {*} fn
 	 */
 	onSystemDidWakeUp(fn) {
-		this.on(SYSTEM_DID_WAKE_UP, (jsn) => fn(jsn));
+		this.#on(Events.systemDidWakeUp, (jsn) => fn(jsn));
 		return this;
 	}
 }
 
-var $SD = new ELGSDStreamDeck();
+const $SD = new ELGSDStreamDeck();
 
 /**
  * connectElgatoStreamDeckSocket

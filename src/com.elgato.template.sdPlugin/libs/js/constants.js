@@ -1,3 +1,7 @@
+/**
+ * Errors Receieved from WebSocket
+ * @type {{"1000": string, "1011": string, "1010": string, "0": string, "1008": string, "1": string, "1007": string, "2": string, "1006": string, "3": string, "1005": string, "1004": string, "1015": string, "1003": string, "1002": string, "1001": string, "1009": string}}
+ */
 const SocketErrors = {
 	0: 'The connection has not yet been established',
 	1: 'The connection is established and communication is possible',
@@ -19,44 +23,51 @@ const SocketErrors = {
 };
 
 /**
- * Events
+ * Events used for communicating with Stream Deck
+ * @type {{sendToPlugin: string, deviceDidDisconnect: string, getSettings: string, deviceDidConnect: string, logMessage: string, keyUp: string, didReceiveGlobalSettings: string, showOk: string, didReceiveSettings: string, willAppear: string, applicationDidLaunch: string, setGlobalSettings: string, getGlobalSettings: string, applicationDidTerminate: string, willDisappear: string, propertyInspectorDidAppear: string, setTitle: string, titleParametersDidChange: string, registerPropertyInspector: string, connected: string, openUrl: string, setSettings: string, sendToPropertyInspector: string, registerPlugin: string, systemDidWakeUp: string, setState: string, propertyInspectorDidDisappear: string, keyDown: string, showAlert: string, setImage: string}}
  */
-//TODO: group these in objects that make sense & rename
-const DID_RECEIVE_SETTINGS = 'didReceiveSettings';
-const DID_RECEIVE_GLOBAL_SETTINGS = 'didReceiveGlobalSettings';
-const KEY_DOWN = 'keyDown';
-const KEY_UP = 'keyUp';
-const WILL_APPEAR = 'willAppear';
-const WILL_DISAPPEAR = 'willDisappear';
-const TITLE_PARAMETERS_DID_CHANGE = 'titleParametersDidChange';
-const DEVICE_DID_CONNECT = 'deviceDidConnect';
-const DEVICE_DID_DISCONNECT = 'deviceDidDisconnect';
-const APPLICATION_DID_LAUNCH = 'applicationDidLaunch';
-const APPLICATION_DID_TERMINATE = 'applicationDidTerminate';
-const SYSTEM_DID_WAKE_UP = 'systemDidWakeUp';
-const PROPERTY_INSPECTOR_DID_APPEAR = 'propertyInspectorDidAppear';
-const PROPERTY_INSPECTOR_DID_DISAPPEAR = 'propertyInspectorDidDisappear';
-const SEND_TO_PLUGIN = 'sendToPlugin';
-const SEND_TO_PROPERTY_INSPECTOR = 'sendToPropertyInspector';
-const CONNECTED = 'connected';
-const SET_IMAGE = 'setImage';
-const SET_TITLE = 'setTitle';
-const SET_STATE = 'setState';
-const SHOW_OK = 'showOk';
-const SHOW_ALERT = 'showAlert';
-const OPEN_URL = 'openUrl';
-const SET_GLOBAL_SETTINGS = 'setGlobalSettings';
-const GET_GLOBAL_SETTINGS = 'getGlobalSettings';
-const SET_SETTINGS = 'setSettings';
-const GET_SETTINGS = 'getSettings';
-const REGISTER_PROPERTY_INSPECTOR = 'registerPropertyInspector';
-const REGISTER_PLUGIN = 'registerPlugin';
-const DATA_LOCALIZE = '[data-localize]';
-const LOG_MESSAGE = 'logMessage';
+const Events = {
+	didReceiveSettings: 'didReceiveSettings',
+	didReceiveGlobalSettings: 'didReceiveGlobalSettings',
+	keyDown: 'keyDown',
+	keyUp: 'keyUp',
+	willAppear: 'willAppear',
+	willDisappear: 'willDisappear',
+	titleParametersDidChange: 'titleParametersDidChange',
+	deviceDidConnect: 'deviceDidConnect',
+	deviceDidDisconnect: 'deviceDidDisconnect',
+	applicationDidLaunch: 'applicationDidLaunch',
+	applicationDidTerminate: 'applicationDidTerminate',
+	systemDidWakeUp: 'systemDidWakeUp',
+	propertyInspectorDidAppear: 'propertyInspectorDidAppear',
+	propertyInspectorDidDisappear: 'propertyInspectorDidDisappear',
+	sendToPlugin: 'sendToPlugin',
+	sendToPropertyInspector: 'sendToPropertyInspector',
+	connected: 'connected',
+	setImage: 'setImage',
+	setTitle: 'setTitle',
+	setState: 'setState',
+	showOk: 'showOk',
+	showAlert: 'showAlert',
+	openUrl: 'openUrl',
+	setGlobalSettings: 'setGlobalSettings',
+	getGlobalSettings: 'getGlobalSettings',
+	setSettings: 'setSettings',
+	getSettings: 'getSettings',
+	registerPropertyInspector: 'registerPropertyInspector',
+	registerPlugin: 'registerPlugin',
+	logMessage: 'logMessage',
+}
 
 /**
- * Destination
+ * Constants used for Stream Deck
+ * @type {{softwareOnly: number, dataLocalize: string, hardwareAndSoftware: number, hardwareOnly: number}}
  */
-const HARDWARE_AND_SOFTWARE = 0;
-const HARDWARE_ONLY = 1;
-const SOFTWARE_ONLY = 2;
+const Constants = {
+	dataLocalize: '[data-localize]',
+
+	//TODOZ: Try the things that use this in stream-deck.js to see if we really need it?
+	 hardwareAndSoftware : 0,
+	 hardwareOnly : 1,
+	 softwareOnly : 2,
+}
