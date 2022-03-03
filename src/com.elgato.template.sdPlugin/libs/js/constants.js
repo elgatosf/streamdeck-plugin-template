@@ -1,6 +1,5 @@
 /**
- * Errors Receieved from WebSocket
- * @type {{"1000": string, "1011": string, "1010": string, "0": string, "1008": string, "1": string, "1007": string, "2": string, "1006": string, "3": string, "1005": string, "1004": string, "1015": string, "1003": string, "1002": string, "1001": string, "1009": string}}
+ * Errors received from WebSocket
  */
 const SocketErrors = {
 	0: 'The connection has not yet been established',
@@ -24,7 +23,6 @@ const SocketErrors = {
 
 /**
  * Events used for communicating with Stream Deck
- * @type {{sendToPlugin: string, deviceDidDisconnect: string, getSettings: string, deviceDidConnect: string, logMessage: string, keyUp: string, didReceiveGlobalSettings: string, showOk: string, didReceiveSettings: string, willAppear: string, applicationDidLaunch: string, setGlobalSettings: string, getGlobalSettings: string, applicationDidTerminate: string, willDisappear: string, propertyInspectorDidAppear: string, setTitle: string, titleParametersDidChange: string, registerPropertyInspector: string, connected: string, openUrl: string, setSettings: string, sendToPropertyInspector: string, registerPlugin: string, systemDidWakeUp: string, setState: string, propertyInspectorDidDisappear: string, keyDown: string, showAlert: string, setImage: string}}
  */
 const Events = {
 	didReceiveSettings: 'didReceiveSettings',
@@ -57,11 +55,11 @@ const Events = {
 	registerPropertyInspector: 'registerPropertyInspector',
 	registerPlugin: 'registerPlugin',
 	logMessage: 'logMessage',
+	switchToProfile: 'switchToProfile'
 }
 
 /**
  * Constants used for Stream Deck
- * @type {{softwareOnly: number, dataLocalize: string, hardwareAndSoftware: number, hardwareOnly: number}}
  */
 const Constants = {
 	dataLocalize: '[data-localize]',

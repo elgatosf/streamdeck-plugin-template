@@ -15,8 +15,10 @@
 		.onDidReceiveSettings(() => {
 			console.log({ object: 'action', event: 'onDidReceiveSettings' });
 		})
-		.onKeyDown(() => {
+		.onKeyDown(({context, device}) => {
+			console.log(jsn);
 			console.log({ object: 'action', event: 'onKeyDown' });
+			$SD.switchToProfile(device, 'HUD XL');
 		})
 		.onKeyUp(() => {
 			console.log({ object: 'action', event: 'onKeyUp' });

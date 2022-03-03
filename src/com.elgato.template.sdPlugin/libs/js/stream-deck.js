@@ -1,7 +1,9 @@
 /// <reference path="event-emitter.js" />
 /// <reference path="constants.js" />
 
-// TODO: add clearTitle, switchToProfile (see https://elgato.slack.com/archives/D02LPKC0M9D/p1645183819000839 ), swap optional context to be second everywhere
+// TODO: switchToProfile (see https://elgato.slack.com/archives/D02LPKC0M9D/p1645183819000839 )
+// TODO: See if we can add params for the call back function, so that the IDE will provide the jsn object with "context, device, etc" 
+// TODO: https://stackoverflow.com/questions/24214962/whats-the-proper-way-to-document-callbacks-with-jsdoc
 
 /**
  * @class StreamDeck
@@ -30,11 +32,11 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Connect to Stream Deck
-	 * @param port
-	 * @param uuid
-	 * @param messageType
-	 * @param appInfoString
-	 * @param actionString
+	 * @param {string} port
+	 * @param {string} uuid
+	 * @param {string} messageType
+	 * @param {string} appInfoString
+	 * @param {string} actionString
 	 */
 	connect([port, uuid, messageType, appInfoString, actionString]) {
 		this.port = port;
@@ -81,7 +83,7 @@ class ELGSDStreamDeck {
 
 		this.websocket.onmessage = (evt) => {
 			const data = evt?.data ? JSON.parse(evt.data) : {};
-			const {action, event} = data;
+			const { action, event } = data;
 			const message = action ? `${action}.${event}` : event;
 
 			if (message && message !== '') this.#emit(message, data);
@@ -90,7 +92,7 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Write to log file
-	 * @param message
+	 * @param {string} message
 	 */
 	logMessage(message) {
 		try {
@@ -110,7 +112,7 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Fetches the specified language json file
-	 * @param pathPrefix
+	 * @param {string} pathPrefix
 	 * @returns {Promise<void>}
 	 */
 	async loadLocalization(pathPrefix) {
@@ -121,16 +123,15 @@ class ELGSDStreamDeck {
 			const elements = document.querySelectorAll(Constants.dataLocalize);
 
 			elements.forEach((element) => {
-				element.textContent =
-					this.localization[element.textContent] ?? element.textContent;
+				element.textContent = this.localization[element.textContent] ?? element.textContent;
 			});
 		}
 	}
 
 	/**
 	 *
-	 * @param {*} path
-	 * @returns
+	 * @param {string} path
+	 * @returns {Promise<any>} json
 	 */
 	async readJson(path) {
 		return new Promise((resolve, reject) => {
@@ -155,33 +156,32 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Send JSON payload to StreamDeck
-	 * @param context
-	 * @param fn
-	 * @param payload
+	 * @param {string} event
+	 * @param {string} context
+	 * @param {object} [payload]
 	 */
-	send(context, fn, payload) {
-		const pl = Object.assign({}, {event: fn, context: context}, payload);
-		this.websocket && this.websocket.send(JSON.stringify(pl));
-	}
+	send(event, context, payload = {}) {
+		const pl = Object.assign({}, {event: event, context: context}, payload);
+		this.websocket && this.websocket.send(JSON.stringify(pl));	}
 
 	/**
 	 * Request the actions's persistent data. StreamDeck does not return the data, but trigger the actions's didReceiveSettings event
-	 * @param context
+	 * @param {string} [context]
 	 */
 	getSettings(context) {
-		this.send(context ?? this.uuid, Events.getSettings, {});
+		this.send(Events.getSettings, context ?? this.uuid);
 	}
 
 	/**
 	 * Save the actions's persistent data.
-	 * @param payload
-	 * @param context
+	 * @param {object} payload
+	 * @param [context]
 	 */
 	setSettings(payload, context) {
-		this.send(context ?? this.uuid, Events.setSettings, {
-			action: StreamDeck?.actionInfo?.action,
+		this.send(Events.setSettings, context ?? this.uuid, {
+			action: this?.actionInfo?.action,
 			payload: payload || {},
-			targetContext: StreamDeck?.actionInfo?.context,
+			targetContext: this?.actionInfo?.context,
 		});
 	}
 
@@ -189,25 +189,25 @@ class ELGSDStreamDeck {
 	 * Request the plugin's persistent data. StreamDeck does not return the data, but trigger the plugin/property inspectors didReceiveGlobalSettings event
 	 */
 	getGlobalSettings() {
-		this.send(this.uuid, Events.getGlobalSettings, {});
+		this.send(Events.getGlobalSettings, this.uuid);
 	}
 
 	/**
 	 * Save the plugin's persistent data
-	 * @param payload
+	 * @param {object} payload
 	 */
 	setGlobalSettings(payload) {
-		this.send(this.uuid, Events.setGlobalSettings, {
+		this.send(Events.setGlobalSettings, this.uuid, {
 			payload: payload,
 		});
 	}
 
 	/**
 	 * Opens a URL in the default web browser
-	 * @param urlToOpen
+	 * @param {string} urlToOpen
 	 */
 	openUrl(urlToOpen) {
-		this.send(this.uuid, Events.openUrl, {
+		this.send(Events.openUrl, this.uuid, {
 			payload: {
 				url: urlToOpen,
 			},
@@ -216,45 +216,40 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Send payload from the property inspector to the plugin
-	 * @param payload
-	 * @param context
+	 * @param {object} payload
+	 * @param {string} [context]
 	 */
 	sendToPlugin(payload, context) {
-		this.send(
-			context ?? this.uuid,
-			Events.sendToPlugin,
-			{
-				action: StreamDeck?.actionInfo?.action,
-				payload: payload || {},
-				targetContext: StreamDeck?.actionInfo?.context,
-			},
-			false
-		);
+		this.send(Events.sendToPlugin, context ?? this.uuid, {
+			action: this?.actionInfo?.action,
+			payload: payload || {},
+			targetContext: this?.actionInfo?.context,
+		});
 	}
 
 	/**
 	 * Display alert triangle on actions key
-	 * @param context
+	 * @param {string} context
 	 */
 	showAlert(context) {
-		this.send(context, Events.showAlert, {});
+		this.send(Events.showAlert, context);
 	}
 
 	/**
 	 * Display ok check mark on actions key
-	 * @param context
+	 * @param {string} context
 	 */
 	showOk(context) {
-		this.send(context, Events.showOk, {});
+		this.send(Events.showOk, context);
 	}
 
 	/**
 	 * Set the state of the actions
-	 * @param context
-	 * @param payload
+	 * @param {object} payload
+	 * @param {string} context
 	 */
 	setState(payload, context) {
-		this.send(context, Events.setState, {
+		this.send(Events.setState, context, {
 			payload: {
 				state: 1 - Number(payload === 0),
 			},
@@ -262,13 +257,13 @@ class ELGSDStreamDeck {
 	}
 
 	/**
-	 * Set the title of the actions's key
-	 * @param context
-	 * @param title
-	 * @param target
+	 * Set the title of the action's key
+	 * @param {string} title
+	 * @param {string} context
+	 * @param [target]
 	 */
-	setTitle(title, target, context) {
-		this.send(context, Events.setTitle, {
+	setTitle(title, context, target) {
+		this.send(Events.setTitle, context, {
 			payload: {
 				title: '' + title || '',
 				target: target || Constants.hardwareAndSoftware,
@@ -277,12 +272,21 @@ class ELGSDStreamDeck {
 	}
 
 	/**
+	 *
+	 * @param {string} context
+	 * @param {number} [target]
+	 */
+	clearTitle(context, target) {
+		this.setTitle(null, context, target || Constants.hardwareAndSoftware);
+	}
+
+	/**
 	 * Send payload to property inspector
-	 * @param context
-	 * @param payload
+	 * @param {object} payload
+	 * @param {string} context
 	 */
 	sendToPropertyInspector(payload, context) {
-		this.send(context, Events.sendToPropertyInspector, {
+		this.send(Events.sendToPropertyInspector, context, {
 			action: this.actionInfo.action,
 			payload: payload,
 		});
@@ -290,12 +294,12 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Set the actions key image
-	 * @param context
-	 * @param img
-	 * @param target
+	 * @param {string} img
+	 * @param {string} context
+	 * @param {number} [target]
 	 */
-	setImage(context, img, target) {
-		this.send(context, Events.setImage, {
+	setImage(img, context, target) {
+		this.send(Events.setImage, context, {
 			payload: {
 				image: img || '',
 				target: target || Constants.hardwareAndSoftware,
@@ -303,9 +307,20 @@ class ELGSDStreamDeck {
 		});
 	}
 
+	//TODO: fix profile switch not working
+	/**
+	 * Switches to profile or returns to previous profile
+	 * @param {string} device
+	 * @param {string} [profile]
+	 */
+	switchToProfile(device, profile ) {
+		this.send(Events.switchToProfile, this.uuid, { device: device, payload: { profile } });
+	}
+
 	/**
 	 * Registers a callback function for when Stream Deck is connected
-	 * @param {*} fn
+	 * @param {function} fn
+	 * @returns ELGSDStreamDeck
 	 */
 	onConnected(fn) {
 		this.#on(Events.connected, (jsn) => fn(jsn));
@@ -314,7 +329,8 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Registers a callback function for when Stream Deck sends data to the property inspector
-	 * @param fn
+	 * @param {function} fn
+	 * @returns ELGSDStreamDeck
 	 */
 	onSendToPropertyInspector(fn) {
 		this.#on(Events.sendToPropertyInspector, (jsn) => fn(jsn));
@@ -323,7 +339,8 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Registers a callback function for the deviceDidConnect event, which fires when a device is plugged in
-	 * @param {*} fn
+	 * @param {function} fn
+	 * @returns ELGSDStreamDeck
 	 */
 	onDeviceDidConnect(fn) {
 		this.#on(Events.deviceDidConnect, (jsn) => fn(jsn));
@@ -332,7 +349,8 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Registers a callback function for the deviceDidDisconnect event, which fires when a device is unplugged
-	 * @param {*} fn
+	 * @param {function} fn
+	 * @returns ELGSDStreamDeck
 	 */
 	onDeviceDidDisconnect(fn) {
 		this.#on(Events.deviceDidDisconnect, (jsn) => fn(jsn));
@@ -341,7 +359,8 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Registers a callback function for the applicationDidLaunch event, which fires when the application starts
-	 * @param {*} fn
+	 * @param {function} fn
+	 * @returns ELGSDStreamDeck
 	 */
 	onApplicationDidLaunch(fn) {
 		this.#on(Events.applicationDidLaunch, (jsn) => fn(jsn));
@@ -350,7 +369,8 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Registers a callback function for the applicationDidTerminate event, which fires when the application exits
-	 * @param {*} fn
+	 * @param {function} fn
+	 * @returns ELGSDStreamDeck
 	 */
 	onApplicationDidTerminate(fn) {
 		this.#on(Events.applicationDidTerminate, (jsn) => fn(jsn));
@@ -359,7 +379,8 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Registers a callback function for the systemDidWakeUp event, which fires when the computer wakes
-	 * @param {*} fn
+	 * @param {function} fn
+	 * @returns ELGSDStreamDeck
 	 */
 	onSystemDidWakeUp(fn) {
 		this.#on(Events.systemDidWakeUp, (jsn) => fn(jsn));

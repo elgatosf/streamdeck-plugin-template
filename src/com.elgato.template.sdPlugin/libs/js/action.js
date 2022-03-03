@@ -112,4 +112,4 @@ class ELGSDAction {
 	}
 }
 
-var Action = ELGSDAction;
+const Action = ELGSDAction;

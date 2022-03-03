@@ -28,4 +28,4 @@ class ELGSDEventEmitter {
 	}
 }
 
-var EventEmitter = new ELGSDEventEmitter();
+const EventEmitter = new ELGSDEventEmitter();
