@@ -1,7 +1,6 @@
 /// <reference path="event-emitter.js" />
 /// <reference path="constants.js" />
 
-// TODO: switchToProfile (see https://elgato.slack.com/archives/D02LPKC0M9D/p1645183819000839 )
 // TODO: See if we can add params for the call back function, so that the IDE will provide the jsn object with "context, device, etc" 
 // TODO: https://stackoverflow.com/questions/24214962/whats-the-proper-way-to-document-callbacks-with-jsdoc
 
@@ -307,9 +306,8 @@ class ELGSDStreamDeck {
 		});
 	}
 
-	//TODO: fix profile switch not working
 	/**
-	 * Switches to profile or returns to previous profile
+	 * Switches to a readonly profile or returns to previous profile 
 	 * @param {string} device
 	 * @param {string} [profile]
 	 */

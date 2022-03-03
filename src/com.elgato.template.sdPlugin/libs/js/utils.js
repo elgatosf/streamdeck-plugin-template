@@ -69,7 +69,7 @@ class Utils {
 	/**
 	 * This provides a slight delay before processing rapid events
 	 * @param {*} wait - delay before processing function (recommended time 150ms)
-	 * @param {*} fn
+	 * @param {function} fn
 	 * @returns
 	 */
 	static debounce(wait, fn) {
