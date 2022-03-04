@@ -55,17 +55,15 @@ const Events = {
 	registerPropertyInspector: 'registerPropertyInspector',
 	registerPlugin: 'registerPlugin',
 	logMessage: 'logMessage',
-	switchToProfile: 'switchToProfile'
-}
+	switchToProfile: 'switchToProfile',
+};
 
 /**
  * Constants used for Stream Deck
  */
 const Constants = {
 	dataLocalize: '[data-localize]',
-
-	//TODOZ: Try the things that use this in stream-deck.js to see if we really need it?
-	 hardwareAndSoftware : 0,
-	 hardwareOnly : 1,
-	 softwareOnly : 2,
-}
+	hardwareAndSoftware: 0,
+	hardwareOnly: 1,
+	softwareOnly: 2,
+};

@@ -1,9 +1,6 @@
 /// <reference path="event-emitter.js" />
 /// <reference path="constants.js" />
 
-// TODO: See if we can add params for the call back function, so that the IDE will provide the jsn object with "context, device, etc" 
-// TODO: https://stackoverflow.com/questions/24214962/whats-the-proper-way-to-document-callbacks-with-jsdoc
-
 /**
  * @class StreamDeck
  * StreamDeck object containing all required code to establish
@@ -160,8 +157,9 @@ class ELGSDStreamDeck {
 	 * @param {object} [payload]
 	 */
 	send(event, context, payload = {}) {
-		const pl = Object.assign({}, {event: event, context: context}, payload);
-		this.websocket && this.websocket.send(JSON.stringify(pl));	}
+		const pl = Object.assign({}, { event: event, context: context }, payload);
+		this.websocket && this.websocket.send(JSON.stringify(pl));
+	}
 
 	/**
 	 * Request the actions's persistent data. StreamDeck does not return the data, but trigger the actions's didReceiveSettings event
@@ -177,10 +175,10 @@ class ELGSDStreamDeck {
 	 * @param [context]
 	 */
 	setSettings(payload, context) {
-		this.send(Events.setSettings, context ?? this.uuid, {
+		this.send(Events.setSettings, this.uuid, {
 			action: this?.actionInfo?.action,
 			payload: payload || {},
-			targetContext: this?.actionInfo?.context,
+			targetContext: context,
 		});
 	}
 
@@ -219,10 +217,10 @@ class ELGSDStreamDeck {
 	 * @param {string} [context]
 	 */
 	sendToPlugin(payload, context) {
-		this.send(Events.sendToPlugin, context ?? this.uuid, {
+		this.send(Events.sendToPlugin, this.uuid, {
 			action: this?.actionInfo?.action,
 			payload: payload || {},
-			targetContext: this?.actionInfo?.context,
+			targetContext: context,
 		});
 	}
 
@@ -284,10 +282,10 @@ class ELGSDStreamDeck {
 	 * @param {object} payload
 	 * @param {string} context
 	 */
-	sendToPropertyInspector(payload, context) {
+	sendToPropertyInspector(context, payload) {
 		this.send(Events.sendToPropertyInspector, context, {
-			action: this.actionInfo.action,
-			payload: payload,
+			action: this?.actionInfo?.action,
+			payload: payload || {},
 		});
 	}
 
@@ -307,11 +305,11 @@ class ELGSDStreamDeck {
 	}
 
 	/**
-	 * Switches to a readonly profile or returns to previous profile 
+	 * Switches to a readonly profile or returns to previous profile
 	 * @param {string} device
 	 * @param {string} [profile]
 	 */
-	switchToProfile(device, profile ) {
+	switchToProfile(device, profile) {
 		this.send(Events.switchToProfile, this.uuid, { device: device, payload: { profile } });
 	}
 
@@ -328,10 +326,11 @@ class ELGSDStreamDeck {
 	/**
 	 * Registers a callback function for when Stream Deck sends data to the property inspector
 	 * @param {function} fn
+	 * @param {function} actionUUID
 	 * @returns ELGSDStreamDeck
 	 */
-	onSendToPropertyInspector(fn) {
-		this.#on(Events.sendToPropertyInspector, (jsn) => fn(jsn));
+	onSendToPropertyInspector(fn, actionUUID) {
+		this.#on(`${actionUUID}.${Events.sendToPropertyInspector}`, (jsn) => fn(jsn));
 		return this;
 	}
 

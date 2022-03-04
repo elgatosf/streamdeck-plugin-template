@@ -16,8 +16,7 @@ $SD.onConnected((jsn) => {
 		Utils.debounce(150, () => {
 			const value = Utils.getFormValue(form);
 			$SD.sendToPlugin(value, context);
-			$SD.setSettings(value);
-			console.log(value);
+			$SD.setSettings(value, context);
 		})
 	);
 });

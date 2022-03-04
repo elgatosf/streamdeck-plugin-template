@@ -101,15 +101,6 @@ class ELGSDAction {
 		this.#on(`${this.UUID}.${Events.sendToPlugin}`, (jsn) => fn(jsn));
 		return this;
 	}
-
-	/**
-	 * Registers a callback function for the sendToPropertyInspector event, which fires when the plugin uses the sendToPropertyInspector api
-	 * @param {function} fn
-	 */
-	onSendToPropertyInspector(fn) {
-		this.#on(`${this.UUID}.${Events.sendToPropertyInspector}`, (jsn) => fn(jsn));
-		return this;
-	}
 }
 
 const Action = ELGSDAction;

@@ -14,9 +14,6 @@ $SD.onConnected(({ actionInfo, appInfo, connection, messageType, port, uuid }) =
 	.onDeviceDidDisconnect(() => {
 		console.log({ object: 'stream-deck', event: 'onDeviceDidDisconnect' });
 	})
-	.onSendToPropertyInspector(() => {
-		console.log({ object: 'stream-deck', event: 'onSendToPropertyInspector' });
-	})
 	.onApplicationDidLaunch(() => {
 		console.log({ object: 'stream-deck', event: 'onApplicationDidLaunch' });
 	})
@@ -57,7 +54,4 @@ new Action('com.elgato.template.action')
 	})
 	.onSendToPlugin(() => {
 		console.log({ object: 'action', event: 'onSendToPlugin' });
-	})
-	.onSendToPropertyInspector(() => {
-		console.log({ object: 'action', event: 'onSendToPropertyInspector' });
 	});
