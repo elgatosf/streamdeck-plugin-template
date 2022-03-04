@@ -1,7 +1,7 @@
 class Utils {
 	/**
 	 * Returns the value from a form using the form controls name property
-	 * @param {*} form
+	 * @param {Element | string} form
 	 * @returns
 	 */
 	static getFormValue(form) {
@@ -35,7 +35,7 @@ class Utils {
 	/**
 	 * Sets the value of form controls using their name attribute and the jsn object key
 	 * @param {*} jsn
-	 * @param {*} form
+	 * @param {Element | string} form
 	 */
 	static setFormValue(jsn, form) {
 		if (typeof form === 'string') {
@@ -68,7 +68,7 @@ class Utils {
 
 	/**
 	 * This provides a slight delay before processing rapid events
-	 * @param {*} wait - delay before processing function (recommended time 150ms)
+	 * @param {number} wait - delay before processing function (recommended time 150ms)
 	 * @param {function} fn
 	 * @returns
 	 */
