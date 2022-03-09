@@ -22,15 +22,6 @@ class ELGSDAction {
 	}
 
 	/**
-	 * Registers a callback function for the didReceiveGlobalSettings event, which fires when calling getGlobalSettings
-	 * @param {function} fn
-	 */
-	onDidReceiveGlobalSettings(fn) {
-		this.#on(Events.didReceiveGlobalSettings, (jsn) => fn(jsn));
-		return this;
-	}
-
-	/**
 	 * Registers a callback function for the keyDown event, which fires when pressing a key down
 	 * @param {function} fn
 	 */

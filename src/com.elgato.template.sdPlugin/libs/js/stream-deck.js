@@ -383,6 +383,15 @@ class ELGSDStreamDeck {
 		this.#on(Events.systemDidWakeUp, (jsn) => fn(jsn));
 		return this;
 	}
+
+	/**
+	 * Registers a callback function for the didReceiveGlobalSettings event, which fires when calling getGlobalSettings
+	 * @param {function} fn
+	 */
+	onDidReceiveGlobalSettings(fn) {
+		this.#on(Events.didReceiveGlobalSettings, (jsn) => fn(jsn));
+		return this;
+	}
 }
 
 const $SD = new ELGSDStreamDeck();
