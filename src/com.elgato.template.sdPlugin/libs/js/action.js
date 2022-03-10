@@ -6,7 +6,9 @@
  */
 class ELGSDAction {
 	UUID;
-	#on = EventEmitter.on;
+	on = EventEmitter.on;
+	emit = EventEmitter.emit;
+
 
 	constructor(UUID) {
 		this.UUID = UUID;

@@ -15,8 +15,8 @@ class ELGSDStreamDeck {
 	language;
 	localization;
 	appInfo;
-	#on = EventEmitter.on;
-	#emit = EventEmitter.emit;
+	on = EventEmitter.on;
+	emit = EventEmitter.emit;
 
 	constructor() {
 		if (ELGSDStreamDeck.__instance) {
@@ -57,7 +57,7 @@ class ELGSDStreamDeck {
 
 			this.websocket.send(JSON.stringify(json));
 
-			this.#emit(Events.connected, {
+			this.emit(Events.connected, {
 				connection: this.websocket,
 				port: this.port,
 				uuid: this.uuid,
@@ -82,7 +82,7 @@ class ELGSDStreamDeck {
 			const { action, event } = data;
 			const message = action ? `${action}.${event}` : event;
 
-			if (message && message !== '') this.#emit(message, data);
+			if (message && message !== '') this.emit(message, data);
 		};
 	}
 
@@ -277,15 +277,25 @@ class ELGSDStreamDeck {
 		this.setTitle(null, context, target || Constants.hardwareAndSoftware);
 	}
 
+	// TODO; add error handling like this with nice messages for all methods for the template
 	/**
 	 * Send payload to property inspector
+	 * @param {string} actionUUID
 	 * @param {object} payload
 	 * @param {string} context
 	 */
-	sendToPropertyInspector(context, payload) {
+	sendToPropertyInspector(actionUUID, context, payload) {
+		if (typeof actionUUID != 'string') {
+			throw 'sendToPropertyInspector requires an actionUUID string';
+		}
+
+		if (typeof context != 'string') {
+			throw 'sendToPropertyInspector requires a key context string';
+		}
+
 		this.send(Events.sendToPropertyInspector, context, {
-			action: this?.actionInfo?.action,
-			payload: payload || {},
+			action: actionUUID,
+			payload: payload || null,
 		});
 	}
 
@@ -319,7 +329,7 @@ class ELGSDStreamDeck {
 	 * @returns ELGSDStreamDeck
 	 */
 	onConnected(fn) {
-		this.#on(Events.connected, (jsn) => fn(jsn));
+		this.on(Events.connected, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -330,7 +340,7 @@ class ELGSDStreamDeck {
 	 * @returns ELGSDStreamDeck
 	 */
 	onSendToPropertyInspector(fn, actionUUID) {
-		this.#on(`${actionUUID}.${Events.sendToPropertyInspector}`, (jsn) => fn(jsn));
+		this.on(`${actionUUID}.${Events.sendToPropertyInspector}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -340,7 +350,7 @@ class ELGSDStreamDeck {
 	 * @returns ELGSDStreamDeck
 	 */
 	onDeviceDidConnect(fn) {
-		this.#on(Events.deviceDidConnect, (jsn) => fn(jsn));
+		this.on(Events.deviceDidConnect, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -350,7 +360,7 @@ class ELGSDStreamDeck {
 	 * @returns ELGSDStreamDeck
 	 */
 	onDeviceDidDisconnect(fn) {
-		this.#on(Events.deviceDidDisconnect, (jsn) => fn(jsn));
+		this.on(Events.deviceDidDisconnect, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -360,7 +370,7 @@ class ELGSDStreamDeck {
 	 * @returns ELGSDStreamDeck
 	 */
 	onApplicationDidLaunch(fn) {
-		this.#on(Events.applicationDidLaunch, (jsn) => fn(jsn));
+		this.on(Events.applicationDidLaunch, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -370,7 +380,7 @@ class ELGSDStreamDeck {
 	 * @returns ELGSDStreamDeck
 	 */
 	onApplicationDidTerminate(fn) {
-		this.#on(Events.applicationDidTerminate, (jsn) => fn(jsn));
+		this.on(Events.applicationDidTerminate, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -380,7 +390,7 @@ class ELGSDStreamDeck {
 	 * @returns ELGSDStreamDeck
 	 */
 	onSystemDidWakeUp(fn) {
-		this.#on(Events.systemDidWakeUp, (jsn) => fn(jsn));
+		this.on(Events.systemDidWakeUp, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -389,7 +399,7 @@ class ELGSDStreamDeck {
 	 * @param {function} fn
 	 */
 	onDidReceiveGlobalSettings(fn) {
-		this.#on(Events.didReceiveGlobalSettings, (jsn) => fn(jsn));
+		this.on(Events.didReceiveGlobalSettings, (jsn) => fn(jsn));
 		return this;
 	}
 }
