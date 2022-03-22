@@ -8,7 +8,7 @@
 	"URL": "https://www.elgato.com/en/gaming/stream-deck",
 	"Version": "1.0.0",
 	"Software": {
-		"MinimumVersion": "4.1"
+		"MinimumVersion": "5.0"
 	},
 	"OS": [
 		{
