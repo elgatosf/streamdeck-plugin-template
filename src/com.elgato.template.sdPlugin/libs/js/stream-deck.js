@@ -6,7 +6,7 @@
  * StreamDeck object containing all required code to establish
  * communication with SD-Software and the Property Inspector
  */
-class ELGSDStreamDeck {
+ class ELGSDStreamDeck {
 	port;
 	uuid;
 	messageType;
@@ -70,7 +70,7 @@ class ELGSDStreamDeck {
 		this.websocket.onerror = (evt) => {
 			const error = `WEBOCKET ERROR: ${evt}, ${evt.data}, ${SocketErrors[evt?.code]}`;
 			console.warn(error);
-			this.log(error);
+			this.logMessage(error);
 		};
 
 		this.websocket.onclose = (evt) => {
@@ -78,10 +78,9 @@ class ELGSDStreamDeck {
 		};
 
 		this.websocket.onmessage = (evt) => {
-			const data = evt?.data ? JSON.parse(evt.data) : {};
+			const data = evt?.data ? JSON.parse(evt.data) : null;
 			const { action, event } = data;
 			const message = action ? `${action}.${event}` : event;
-
 			if (message && message !== '') this.emit(message, data);
 		};
 	}
@@ -100,9 +99,11 @@ class ELGSDStreamDeck {
 					},
 				};
 				this.websocket.send(JSON.stringify(json));
+			} else {
+				console.error('Websocket not defined');
 			}
 		} catch (e) {
-			console.log('Websocket not defined');
+			console.error('Websocket not defined');
 		}
 	}
 
@@ -177,7 +178,7 @@ class ELGSDStreamDeck {
 	setSettings(payload, context) {
 		this.send(Events.setSettings, this.uuid, {
 			action: this?.actionInfo?.action,
-			payload: payload || {},
+			payload: payload || null,
 			targetContext: context,
 		});
 	}
@@ -219,7 +220,7 @@ class ELGSDStreamDeck {
 	sendToPlugin(payload, context) {
 		this.send(Events.sendToPlugin, this.uuid, {
 			action: this?.actionInfo?.action,
-			payload: payload || {},
+			payload: payload || null,
 			targetContext: context,
 		});
 	}
@@ -335,11 +336,14 @@ class ELGSDStreamDeck {
 
 	/**
 	 * Registers a callback function for when Stream Deck sends data to the property inspector
+	 * @param {string} actionUUID
 	 * @param {function} fn
-	 * @param {function} actionUUID
 	 * @returns ELGSDStreamDeck
 	 */
-	onSendToPropertyInspector(fn, actionUUID) {
+	onSendToPropertyInspector(actionUUID, fn) {
+		if (typeof actionUUID != 'string') {
+			throw 'onSendToPropertyInspector requires an actionUUID string.';
+		}
 		this.on(`${actionUUID}.${Events.sendToPropertyInspector}`, (jsn) => fn(jsn));
 		return this;
 	}
