@@ -54,7 +54,7 @@ class Utils {
 				const { name, type } = element;
 				const value = jsn[name];
 				const isCheckOrRadio = type === 'checkbox' || type === 'radio';
-				console.log(element.type)
+
 				if (isCheckOrRadio) {
 					const isSingle = value === element.value;
 					if (isSingle || (Array.isArray(value) && value.includes(element.value))) {

@@ -9,8 +9,11 @@ class ELGSDAction {
 	on = EventEmitter.on;
 	emit = EventEmitter.emit;
 
-
 	constructor(UUID) {
+		if (!UUID) {
+			throw 'An action UUID matching the action UUID in your manifest is required when creating Actions.';
+		}
+
 		this.UUID = UUID;
 	}
 
@@ -19,7 +22,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onDidReceiveSettings(fn) {
-		this.#on(`${this.UUID}.${Events.didReceiveSettings}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the didReceiveSettings event is required for onDidReceiveSettings.';
+		}
+
+		this.on(`${this.UUID}.${Events.didReceiveSettings}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -28,7 +35,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onKeyDown(fn) {
-		this.#on(`${this.UUID}.${Events.keyDown}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the keyDown event is required for onKeyDown.';
+		}
+
+		this.on(`${this.UUID}.${Events.keyDown}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -37,7 +48,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onKeyUp(fn) {
-		this.#on(`${this.UUID}.${Events.keyUp}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the keyUp event is required for onKeyUp.';
+		}
+
+		this.on(`${this.UUID}.${Events.keyUp}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -46,7 +61,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onWillAppear(fn) {
-		this.#on(`${this.UUID}.${Events.willAppear}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the willAppear event is required for onWillAppear.';
+		}
+
+		this.on(`${this.UUID}.${Events.willAppear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -55,7 +74,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onWillDisappear(fn) {
-		this.#on(`${this.UUID}.${Events.willDisappear}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the willDisappear event is required for onWillDisappear.';
+		}
+
+		this.on(`${this.UUID}.${Events.willDisappear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -64,7 +87,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onTitleParametersDidChange(fn) {
-		this.#on(`${this.UUID}.${Events.titleParametersDidChange}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the titleParametersDidChange event is required for onTitleParametersDidChange.';
+		}
+
+		this.on(`${this.UUID}.${Events.titleParametersDidChange}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -73,7 +100,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onPropertyInspectorDidAppear(fn) {
-		this.#on(`${this.UUID}.${Events.propertyInspectorDidAppear}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the propertyInspectorDidAppear event is required for onPropertyInspectorDidAppear.';
+		}
+
+		this.on(`${this.UUID}.${Events.propertyInspectorDidAppear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -82,7 +113,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onPropertyInspectorDidDisappear(fn) {
-		this.#on(`${this.UUID}.${Events.propertyInspectorDidDisappear}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the propertyInspectorDidDisappear event is required for onPropertyInspectorDidDisappear.';
+		}
+
+		this.on(`${this.UUID}.${Events.propertyInspectorDidDisappear}`, (jsn) => fn(jsn));
 		return this;
 	}
 
@@ -91,7 +126,11 @@ class ELGSDAction {
 	 * @param {function} fn
 	 */
 	onSendToPlugin(fn) {
-		this.#on(`${this.UUID}.${Events.sendToPlugin}`, (jsn) => fn(jsn));
+		if (!fn) {
+			throw 'A callback function for the sendToPlugin event is required for onSendToPlugin.';
+		}
+
+		this.on(`${this.UUID}.${Events.sendToPlugin}`, (jsn) => fn(jsn));
 		return this;
 	}
 }

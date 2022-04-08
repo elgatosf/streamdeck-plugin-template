@@ -6,7 +6,7 @@
  * StreamDeck object containing all required code to establish
  * communication with SD-Software and the Property Inspector
  */
- class ELGSDStreamDeck {
+class ELGSDStreamDeck {
 	port;
 	uuid;
 	messageType;
@@ -90,6 +90,10 @@
 	 * @param {string} message
 	 */
 	logMessage(message) {
+		if (!message) {
+			throw 'A message is required for logMessage.';
+		}
+
 		try {
 			if (this.websocket) {
 				const json = {
@@ -113,6 +117,10 @@
 	 * @returns {Promise<void>}
 	 */
 	async loadLocalization(pathPrefix) {
+		if (!pathPrefix) {
+			throw 'A path to localization json is required for loadLocalization.';
+		}
+
 		const manifest = await this.readJson(`${pathPrefix}${this.language}.json`);
 		this.localization = manifest['Localization'] ?? null;
 
@@ -131,6 +139,10 @@
 	 * @returns {Promise<any>} json
 	 */
 	async readJson(path) {
+		if (!path) {
+			throw 'A path is required to readJson.';
+		}
+
 		return new Promise((resolve, reject) => {
 			const req = new XMLHttpRequest();
 			req.onerror = reject;
@@ -205,6 +217,10 @@
 	 * @param {string} urlToOpen
 	 */
 	openUrl(urlToOpen) {
+		if (!url) {
+			throw 'A url is required for openUrl.';
+		}
+
 		this.send(Events.openUrl, this.uuid, {
 			payload: {
 				url: urlToOpen,
@@ -230,6 +246,10 @@
 	 * @param {string} context
 	 */
 	showAlert(context) {
+		if (!context) {
+			throw 'A context is required to showAlert on the key.';
+		}
+
 		this.send(Events.showAlert, context);
 	}
 
@@ -238,6 +258,10 @@
 	 * @param {string} context
 	 */
 	showOk(context) {
+		if (!context) {
+			throw 'A context is required to showOk on the key.';
+		}
+
 		this.send(Events.showOk, context);
 	}
 
@@ -247,6 +271,14 @@
 	 * @param {string} context
 	 */
 	setState(payload, context) {
+		if (!payload) {
+			throw 'A state is required when using setState.';
+		}
+
+		if (!context) {
+			throw 'A context is required when using setState.';
+		}
+
 		this.send(Events.setState, context, {
 			payload: {
 				state: 1 - Number(payload === 0),
@@ -261,6 +293,14 @@
 	 * @param [target]
 	 */
 	setTitle(title, context, target) {
+		if (!title) {
+			throw 'A title is required for setTitle.';
+		}
+
+		if (!context) {
+			throw 'A key context is required for setTitle.';
+		}
+
 		this.send(Events.setTitle, context, {
 			payload: {
 				title: '' + title || '',
@@ -275,10 +315,12 @@
 	 * @param {number} [target]
 	 */
 	clearTitle(context, target) {
+		if (!context) {
+			throw 'A key context is required to clearTitle.';
+		}
 		this.setTitle(null, context, target || Constants.hardwareAndSoftware);
 	}
 
-	// TODO; add error handling like this with nice messages for all methods for the template
 	/**
 	 * Send payload to property inspector
 	 * @param {string} actionUUID
@@ -287,11 +329,11 @@
 	 */
 	sendToPropertyInspector(actionUUID, context, payload) {
 		if (typeof actionUUID != 'string') {
-			throw 'sendToPropertyInspector requires an actionUUID string';
+			throw 'An action UUID is required to sendToPropertyInspector.';
 		}
 
 		if (typeof context != 'string') {
-			throw 'sendToPropertyInspector requires a key context string';
+			throw 'A key context is required to sendToPropertyInspector.';
 		}
 
 		this.send(Events.sendToPropertyInspector, context, {
@@ -307,6 +349,13 @@
 	 * @param {number} [target]
 	 */
 	setImage(img, context, target) {
+		if (!img) {
+			throw 'An image is required for setImage.';
+		}
+
+		if (!context) {
+			throw 'A key context is required for setImage.';
+		}
 		this.send(Events.setImage, context, {
 			payload: {
 				image: img || '',
@@ -321,6 +370,14 @@
 	 * @param {string} [profile]
 	 */
 	switchToProfile(device, profile) {
+		if (!device) {
+			throw 'A device id is required for switchToProfile.';
+		}
+
+		if (!profile) {
+			throw 'A profile name is required for switchToProfile';
+		}
+
 		this.send(Events.switchToProfile, this.uuid, { device: device, payload: { profile } });
 	}
 
@@ -330,6 +387,10 @@
 	 * @returns ELGSDStreamDeck
 	 */
 	onConnected(fn) {
+		if (!fn) {
+			throw 'A callback function for the connected event is required for onConnected.';
+		}
+
 		this.on(Events.connected, (jsn) => fn(jsn));
 		return this;
 	}
@@ -342,8 +403,13 @@
 	 */
 	onSendToPropertyInspector(actionUUID, fn) {
 		if (typeof actionUUID != 'string') {
-			throw 'onSendToPropertyInspector requires an actionUUID string.';
+			throw 'An action UUID string is required for onSendToPropertyInspector.';
 		}
+
+		if (!fn) {
+			throw 'A callback function for the sendToPropertyInspector event is required for onSendToPropertyInspector.';
+		}
+
 		this.on(`${actionUUID}.${Events.sendToPropertyInspector}`, (jsn) => fn(jsn));
 		return this;
 	}
@@ -354,6 +420,10 @@
 	 * @returns ELGSDStreamDeck
 	 */
 	onDeviceDidConnect(fn) {
+		if (!fn) {
+			throw 'A callback function for the deviceDidConnect event is required for onDeviceDidConnect.';
+		}
+
 		this.on(Events.deviceDidConnect, (jsn) => fn(jsn));
 		return this;
 	}
@@ -364,6 +434,10 @@
 	 * @returns ELGSDStreamDeck
 	 */
 	onDeviceDidDisconnect(fn) {
+		if (!fn) {
+			throw 'A callback function for the deviceDidDisconnect event is required for onDeviceDidDisconnect.';
+		}
+
 		this.on(Events.deviceDidDisconnect, (jsn) => fn(jsn));
 		return this;
 	}
@@ -374,6 +448,10 @@
 	 * @returns ELGSDStreamDeck
 	 */
 	onApplicationDidLaunch(fn) {
+		if (!fn) {
+			throw 'A callback function for the applicationDidLaunch event is required for onApplicationDidLaunch.';
+		}
+
 		this.on(Events.applicationDidLaunch, (jsn) => fn(jsn));
 		return this;
 	}
@@ -384,6 +462,10 @@
 	 * @returns ELGSDStreamDeck
 	 */
 	onApplicationDidTerminate(fn) {
+		if (!fn) {
+			throw 'A callback function for the applicationDidTerminate event is required for onApplicationDidTerminate.';
+		}
+
 		this.on(Events.applicationDidTerminate, (jsn) => fn(jsn));
 		return this;
 	}
@@ -394,6 +476,10 @@
 	 * @returns ELGSDStreamDeck
 	 */
 	onSystemDidWakeUp(fn) {
+		if (!fn) {
+			throw 'A callback function for the systemDidWakeUp event is required for onSystemDidWakeUp.';
+		}
+
 		this.on(Events.systemDidWakeUp, (jsn) => fn(jsn));
 		return this;
 	}
@@ -403,6 +489,10 @@
 	 * @param {function} fn
 	 */
 	onDidReceiveGlobalSettings(fn) {
+		if (!fn) {
+			throw 'A callback function for the didReceiveGlobalSettings event is required for onDidReceiveGlobalSettings.';
+		}
+
 		this.on(Events.didReceiveGlobalSettings, (jsn) => fn(jsn));
 		return this;
 	}
