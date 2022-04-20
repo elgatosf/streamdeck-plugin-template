@@ -38,6 +38,10 @@ class Utils {
 	 * @param {Element | string} form
 	 */
 	static setFormValue(jsn, form) {
+		if (!jsn) {
+			return;
+		}
+
 		if (typeof form === 'string') {
 			form = document.querySelector(form);
 		}
@@ -52,8 +56,10 @@ class Utils {
 			.filter((element) => element?.name)
 			.forEach((element) => {
 				const { name, type } = element;
-				const value = jsn[name];
+				const value = name in jsn ? jsn[name] : null;
 				const isCheckOrRadio = type === 'checkbox' || type === 'radio';
+
+				if (value === null) return;
 
 				if (isCheckOrRadio) {
 					const isSingle = value === element.value;
