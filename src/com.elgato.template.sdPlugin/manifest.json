@@ -26,6 +26,16 @@
 		{
 			"Icon": "actions/template/assets/actionimage",
 			"Name": "Example Action",
+			"Controllers": ["Keypad", "Encoder"],
+			"Encoder": {
+				"layout": "$B1",
+				"TriggerDescription": {
+					"Rotate": "Describe the rotation",
+					"Push": "Describe the encoder push",
+					"Touch": "Describe the touch",
+					"LongTouch": "Describe the long touch"
+				}
+			},
 			"States": [
 				{
 					"Image": "actions/template/assets/action"

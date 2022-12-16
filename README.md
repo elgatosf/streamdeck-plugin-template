@@ -1,7 +1,7 @@
 
 # Stream Deck Plugin Template
 
-The `Stream Deck Plugin Template` is a template to let you get started quickly when writing a JavaScript plugin for [Stream Deck](https://developer.elgato.com/documentation/stream-deck/). `Stream Deck Plugin Template` requires Stream Deck 5.0 or later.
+The `Stream Deck Plugin Template` is a template to let you get started quickly when writing a JavaScript plugin for [Stream Deck](https://developer.elgato.com/documentation/stream-deck/). `Stream Deck Plugin Template` requires Stream Deck 6.0 or later.
 
 ## Description
 
@@ -22,7 +22,7 @@ The `Stream Deck Plugin Template` is a template to let you get started quickly w
 
 ## Quick Start Guide
 
-A short guide to help you getting started quickly.
+A short guide to help you get started quickly.
 
 ### Clone the repo
 
@@ -30,18 +30,35 @@ A short guide to help you getting started quickly.
 
 ### Replace Name
 
-`com.elgato.template` with `my.domain.plugin`
+Rename the folder as well as any references.
+
+`com.elgato.template` with `my.domain.plugin-name`
+
+### Get the latest library
+
+Be sure `.gitmodules` has been updated to match your new folder name `my.domain.plugin-name` and then pull the latest libraries.
+
+```git submodule init && git submodule update```
 
 ### Start Coding
 
-You can get starting in app.js!
+You can get started in app.js!
 
 ```javascript
-$SD.onConnected(({actionInfo, appInfo, connection, messageType, port, uuid}) => {
-    const myAction = new Action('my.domain.plugin.action');
+const myAction = new Action('com.elgato.template.action');
 
-    myAction.onKeyUp(({action, context, device, event, payload}) => {
-        console.log('Your code goes here!');
-    });
+/**
+ * The first event fired when Stream Deck starts
+ */
+$SD.onConnected(({ actionInfo, appInfo, connection, messageType, port, uuid }) => {
+  console.log('Stream Deck connected!');
+});
+
+myAction.onKeyUp(({ action, context, device, event, payload }) => {
+  console.log('Your key code goes here!');
+});
+
+myAction.onDialRotate(({ action, context, device, event, payload }) => {
+  console.log('Your dial code goes here!');
 });
 ```

@@ -1,8 +1,8 @@
-/// <reference path="../../../libs/js/stream-deck.js" />
+/// <reference path="../../../libs/js/property-inspector.js" />
 /// <reference path="../../../libs/js/utils.js" />
 
-$SD.onConnected((jsn) => {
-	$SD.loadLocalization('../../../');
+$PI.onConnected((jsn) => {
+	$PI.loadLocalization('../../../');
 
 	const form = document.querySelector('#property-inspector');
 	const { actionInfo, appInfo, connection, messageType, port, uuid } = jsn;
@@ -15,8 +15,7 @@ $SD.onConnected((jsn) => {
 		'input',
 		Utils.debounce(150, () => {
 			const value = Utils.getFormValue(form);
-			$SD.sendToPlugin(null, value);
-			$SD.setSettings(null, value);
+			$PI.setSettings(value);
 		})
 	);
 });
