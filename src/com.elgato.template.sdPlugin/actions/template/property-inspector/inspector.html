@@ -1,62 +1,78 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover"
-		/>
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-		<title>com.elgato.template Property Inspector</title>
-		<link rel="stylesheet" href="../../../libs/css/sdpi.css" />
-	</head>
-	<body>
-		<div class="sdpi-wrapper">
-			<form id="property-inspector">
-				<div class="sdpi-item">
-					<div data-localize class="sdpi-item-label" title="My name">Name</div>
-					<input data-localize class="sdpi-item-value" name="name" type="text" value="" placeholder="Click Me"/>
-				</div>
 
-				<div type="textarea" class="sdpi-item">
-					<div class="sdpi-item-label up20" data-localize title="My message">Message</div>
-					<div class="sdpi-item-value textarea">
-						<textarea
-							name="message"
-							type="textarea"
-							maxlength="50"
-							class="three-lines"
-						></textarea>
-					</div>
-				</div>
-			</form>
-            <div class="sdpi-item">
-                <div class="sdpi-item-label" data-localize title="My button">Button</div>
-                <button
+<head>
+    <meta charset="utf-8" />
+    <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>com.elgato.template Property Inspector</title>
+    <link rel="stylesheet" href="../../../libs/css/sdpi.css" />
+</head>
+
+<body>
+    <div class="sdpi-wrapper">
+        <div type="tabs" class="sdpi-item">
+            <div class="sdpi-item-label empty"></div>
+            <div class="tabs">
+                <div class="tab selected" data-target="#tab1" title="Show some inputs">Inputs</div>
+                <div class="tab" data-target="#tab2" title="Here's some text-areas">Text</div>
+            </div>
+        </div>
+        <hr class="tab-separator">
+        <form id="property-inspector">
+            <div id="tab1" class="tab-container">
+                <div class="sdpi-item">
+                    <div data-localize class="sdpi-item-label" title="My name">Name</div>
+                    <input data-localize class="sdpi-item-value" name="name" type="text" value="" placeholder="Click Me" />
+                </div>
+
+                <div type="textarea" class="sdpi-item">
+                    <div class="sdpi-item-label" data-localize title="My message">Message</div>
+                    <div class="sdpi-item-value textarea">
+                        <textarea
+                                  name="message"
+                                  type="textarea"
+                                  maxlength="50"
+                                  class="three-lines"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div id="tab2" class="tab-container">
+                <div class="sdpi-item">
+                    <div data-localize class="sdpi-item-label" title="More">More</div>
+                    <input data-localize class="sdpi-item-value" name="more" type="text" value="" placeholder="More info" />
+                </div>
+            </div>
+        </form>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label" data-localize title="My button">Button</div>
+            <button
                     class="sdpi-item-value"
                     value="Click Me"
                     data-localize
-                    id="open-external"
-                >
-                    Click Me
-                </button>
-            </div>
-		</div>
+                    id="open-external">
+                Click Me
+            </button>
+        </div>
+    </div>
 
-		<div class="sdpi-info-label hidden" style="top: -1000" value=""></div>
-		
-		<!-- Stream Deck Libs -->
-		<script src="../../../libs/js/constants.js"></script>
-		<script src="../../../libs/js/prototypes.js"></script>
-		<script src="../../../libs/js/timers.js"></script>
-		<script src="../../../libs/js/utils.js"></script>
-		<script src="../../../libs/js/events.js"></script>
-		<script src="../../../libs/js/api.js"></script>
-		<script src="../../../libs/js/property-inspector.js"></script>
-		<script src="../../../libs/js/dynamic-styles.js"></script>
+    <div class="sdpi-info-label hidden" style="top: -1000" value=""></div>
 
-		<!-- Property Inspector Source -->
-		<script src="inspector.js"></script>
-	</body>
+    <!-- Stream Deck Libs -->
+    <script src="../../../libs/js/constants.js"></script>
+    <script src="../../../libs/js/prototypes.js"></script>
+    <script src="../../../libs/js/timers.js"></script>
+    <script src="../../../libs/js/utils.js"></script>
+    <script src="../../../libs/js/events.js"></script>
+    <script src="../../../libs/js/api.js"></script>
+    <script src="../../../libs/js/property-inspector.js"></script>
+    <script src="../../../libs/js/dynamic-styles.js"></script>
+
+    <!-- Property Inspector Source -->
+    <script src="inspector.js"></script>
+</body>
+
 </html>
