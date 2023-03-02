@@ -15,12 +15,12 @@
 		<div class="sdpi-wrapper">
 			<form id="property-inspector">
 				<div class="sdpi-item">
-					<div data-localize class="sdpi-item-label">Name</div>
-					<input class="sdpi-item-value" name="name" type="text" value="" />
+					<div data-localize class="sdpi-item-label" title="My name">Name</div>
+					<input data-localize class="sdpi-item-value" name="name" type="text" value="" placeholder="Click Me"/>
 				</div>
 
 				<div type="textarea" class="sdpi-item">
-					<div class="sdpi-item-label up20" data-localize>Message</div>
+					<div class="sdpi-item-label up20" data-localize title="My message">Message</div>
 					<div class="sdpi-item-value textarea">
 						<textarea
 							name="message"
@@ -30,19 +30,18 @@
 						></textarea>
 					</div>
 				</div>
-
-				<div class="sdpi-item">
-					<div class="sdpi-item-label" data-localize>Button</div>
-					<button
-						class="sdpi-item-value"
-						value="Click Me"
-						data-localize
-						id="open-external"
-					>
-						Click Me
-					</button>
-				</div>
 			</form>
+            <div class="sdpi-item">
+                <div class="sdpi-item-label" data-localize title="My button">Button</div>
+                <button
+                    class="sdpi-item-value"
+                    value="Click Me"
+                    data-localize
+                    id="open-external"
+                >
+                    Click Me
+                </button>
+            </div>
 		</div>
 
 		<div class="sdpi-info-label hidden" style="top: -1000" value=""></div>
