@@ -47,7 +47,7 @@ document.querySelector('#open-external').addEventListener('click', () => {
  * - a tab must have a data-target attribute that points to the id of the content
  * - the content must have the class "tab-content"
  * - the content must have an id that matches the data-target attribute of the tab
- * - the content must have a data-tab attribute that matches the data-target attribute of the tab
+ * 
  *  <div class="tab selected" data-target="#tab1" title="Show some inputs">Inputs</div>
  *  <div class="tab" data-target="#tab2" title="Here's some text-areas">Text</div>
  * a complete tab-example can be found in the index.html
