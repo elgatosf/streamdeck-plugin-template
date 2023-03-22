@@ -6,7 +6,7 @@
 	"Name": "Stream Deck Template",
 	"Icon": "actions/template/assets/action",
 	"URL": "https://www.elgato.com/en/gaming/stream-deck",
-	"Version": "1.0.1",
+	"Version": "1.0.2",
 	"Software": {
 		"MinimumVersion": "5.0"
 	},
