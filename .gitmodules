@@ -1,3 +1,0 @@
-[submodule "src/com.elgato.template.sdPlugin/libs"]
-	path = src/com.elgato.template.sdPlugin/libs
-	url = https://github.com/elgatosf/streamdeck-javascript-sdk

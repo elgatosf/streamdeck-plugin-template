@@ -36,9 +36,15 @@ Rename the folder as well as any references.
 
 ### Get the latest library
 
-Be sure `.gitmodules` has been updated to match your new folder name `my.domain.plugin-name` and then pull the latest libraries.
+You can either clone the javascript library or add it as a submodule to your repository.
 
-```git submodule init && git submodule update```
+#### Clone
+
+```git clone https://github.com/elgatosf/streamdeck-javascript-sdk src/my.domain.plugin-name/libs```
+
+#### Add Submodule
+
+```git submodule add https://github.com/elgatosf/streamdeck-javascript-sdk src/my.domain.plugin-name/libs```
 
 ### Start Coding
 
