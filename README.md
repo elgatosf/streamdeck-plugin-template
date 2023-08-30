@@ -32,7 +32,10 @@ A short guide to help you get started quickly.
 
 Rename the folder as well as any references.
 
-`com.elgato.template` with `my.domain.plugin-name`
+`com.elgato.template.sdPlugin` with `my.domain.plugin-name.sdPlugin`
+
+> [!IMPORTANT]  
+> When sym-linking the plugin, the folder name must end with `.sdPlugin`.
 
 ### Get the latest library
 
