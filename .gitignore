@@ -4,6 +4,7 @@
 com.elgato.template.streamDeckPlugin
 .vscode/**
 package.json
+package-lock.json
 .history
 __exclude
 .editorconfig
